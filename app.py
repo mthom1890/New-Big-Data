@@ -135,9 +135,25 @@ API_REGISTRY = [
 # =============================================================================
 
 PLACEMENTS = [
-    {"id": "heatpump_1",   "type": "heat_pump",  "x": 1.40, "y": 4.00, "rot": 0,   "power": 1.0, "label": "Heat pump A"},
-    {"id": "humidifier_1", "type": "humidifier", "x": 10.60, "y": 2.20, "rot": 180, "power": 1.0, "label": "Humidifier A"},
-    {"id": "fan_1",        "type": "fan",        "x": 6.00, "y": 7.30, "rot": 270, "power": 1.0, "label": "Fan A"},
+    # Three spatial bays, left to right: Tennessee, Georgia, Alabama.
+    {"id": "heatpump_1", "type": "heat_pump", "x": 0.85, "y": 4.0, "rot": 0,
+     "power": 1.0, "label": "Tennessee heat pump"},
+    {"id": "humidifier_1", "type": "humidifier", "x": 2.5, "y": 1.0, "rot": 90,
+     "power": 1.0, "label": "Tennessee humidifier"},
+    {"id": "fan_1", "type": "fan", "x": 2.0, "y": 7.1, "rot": 270,
+     "power": 1.0, "label": "Tennessee fan"},
+    {"id": "heatpump_2", "type": "heat_pump", "x": 4.6, "y": 4.0, "rot": 0,
+     "power": 1.0, "label": "Georgia heat pump"},
+    {"id": "humidifier_2", "type": "humidifier", "x": 6.3, "y": 1.0, "rot": 90,
+     "power": 1.0, "label": "Georgia humidifier"},
+    {"id": "fan_2", "type": "fan", "x": 6.0, "y": 7.1, "rot": 270,
+     "power": 1.0, "label": "Georgia fan"},
+    {"id": "heatpump_3", "type": "heat_pump", "x": 8.5, "y": 4.0, "rot": 0,
+     "power": 1.0, "label": "Alabama heat pump"},
+    {"id": "humidifier_3", "type": "humidifier", "x": 10.4, "y": 1.0, "rot": 90,
+     "power": 1.0, "label": "Alabama humidifier"},
+    {"id": "fan_3", "type": "fan", "x": 10.0, "y": 7.1, "rot": 270,
+     "power": 1.0, "label": "Alabama fan"},
 ]
 
 # =============================================================================
@@ -178,12 +194,17 @@ PLACEMENTS = [
 # =============================================================================
 
 RULES = [
-    {"system": "heatpump_1", "api": "team_1_points", "op": ">=", "value": 30,
-     "value2": None, "then": 27.0, "otherwise": 19.0},
-    {"system": "fan_1", "api": "team_1_margin", "op": ">=", "value": 14,
-     "value2": None, "then": 4.0, "otherwise": 0.5},
-    {"system": "humidifier_1", "api": "team_2_margin", "op": "between",
-     "value": -7, "value2": 7, "then": 70.0, "otherwise": 35.0},
+    # Each team drives one of each mechanical system.
+    *[{"system": f"heatpump_{i}", "api": f"team_{i}_points", "op": ">=",
+       "value": 30, "value2": None, "then": 27.0, "otherwise": 19.0}
+      for i in range(1, 4)],
+    *[{"system": f"humidifier_{i}", "api": f"team_{i}_margin", "op": "between",
+       "value": -7, "value2": 7, "then": 70.0, "otherwise": 35.0}
+      for i in range(1, 4)],
+    *[{"system": f"fan_{i}", "api": f"team_{i}_margin", "op": ">=",
+       "value": 14, "value2": None, "then": 4.0, "otherwise": 0.5}
+      for i in range(1, 4)],
+    # Front lights show scoring; back lights show wins.
     *[{"system": f"light_{i}", "api": f"team_{i}_points", "op": ">=",
        "value": 30, "value2": None, "then": 1.0, "otherwise": 0.15}
       for i in range(1, 4)],

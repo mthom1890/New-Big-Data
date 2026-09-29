@@ -116,6 +116,53 @@ header .eyebrow{color:var(--nav-ink)}
 .mappingCard .live{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--ink-2)}
 @media(max-width:700px){.mappingGrid{grid-template-columns:1fr}}
 
+/* Stadium shell: photo is atmosphere, HTML carries all text and data. */
+.wrap{max-width:1320px}
+header.top{align-items:center;gap:16px;position:relative;z-index:2;margin-bottom:0;border-radius:0}
+header.top h1{font-size:22px;letter-spacing:.02em}
+.arenaNav{display:flex;gap:16px;flex-wrap:wrap}
+.arenaNav a{color:var(--nav-ink);text-decoration:none;font-size:10px;font-weight:800;letter-spacing:.1em;border-bottom:2px solid transparent;padding:8px 0}
+.arenaNav a:hover,.arenaNav a:focus-visible{border-color:var(--accent)}
+header.top .controls{margin-left:auto}
+.stadiumHero{width:100%;height:min(78vh,720px);min-height:450px;position:relative;overflow:hidden;
+  background:var(--nav) url("/static/stadium-night.png") center center/cover no-repeat;
+  display:flex;align-items:center;justify-content:center;text-align:center;border:0;border-radius:0;margin-bottom:0}
+.heroShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,9,14,.32),rgba(5,9,14,.43) 50%,rgba(5,9,14,.12))}
+.heroContent{position:relative;z-index:1;color:var(--nav-ink);padding:30px;max-width:850px}
+.heroContent .eyebrow{color:var(--nav-ink);letter-spacing:.25em}
+.heroDisplay{font-family:"Arial Narrow",Impact,Arial,sans-serif;font-stretch:condensed;font-weight:900;
+  font-size:clamp(54px,9vw,140px);line-height:.84;letter-spacing:-.065em;text-shadow:0 4px 24px rgba(0,0,0,.75)}
+.heroDisplay span,.heroDisplay strong{display:block}
+.heroDisplay strong{color:var(--nav-ink);font-weight:900}
+.heroContent p{font-size:clamp(14px,2vw,20px);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin:23px auto}
+.enterBtn{display:inline-flex;gap:26px;align-items:center;padding:14px 20px;background:var(--accent);color:var(--nav-ink);
+  text-decoration:none;font-weight:900;letter-spacing:.1em;border:1px solid var(--nav-ink)}
+.enterBtn:hover{background:var(--nav);color:var(--nav-ink)}
+.heroSideline{position:absolute;bottom:12px;left:20px;right:20px;color:var(--nav-ink);
+  font-size:10px;font-weight:800;letter-spacing:.16em;text-align:left;z-index:1}
+.scoreboard{padding:0;background:var(--nav);color:var(--nav-ink);border:0;border-top:4px solid var(--accent);border-radius:0}
+.boardHead,.boardFoot{display:flex;justify-content:space-between;gap:10px;padding:9px 18px;
+  font-size:10px;font-weight:800;letter-spacing:.12em;background:var(--hero)}
+.boardGrid{display:grid;grid-template-columns:repeat(3,1fr)}
+.boardTeam{padding:18px 20px;border-right:1px solid var(--ink-2)}
+.boardTeam:last-child{border-right:0}
+.boardTeamName{font-size:12px;font-weight:900;letter-spacing:.1em;color:var(--nav-ink)}
+.boardNumbers{display:flex;align-items:baseline;gap:9px;font-family:var(--font-mono);margin-top:4px}
+.boardNumbers span{font-size:clamp(24px,3.3vw,44px);font-weight:900;line-height:1;color:var(--nav-ink)}
+.boardNumbers small{font-size:9px;color:var(--rule-2);margin-right:12px}
+.sectionKicker{font-size:10px;font-weight:900;letter-spacing:.17em;color:var(--accent);margin-bottom:6px}
+.fieldSection{position:relative;border-top:4px solid var(--accent)}
+.fieldSection:before{content:"";position:absolute;left:0;right:0;top:0;height:8px;
+  background:repeating-linear-gradient(90deg,transparent 0 7%,var(--rule) 7% 7.2%,transparent 7.2% 10%);opacity:.5}
+.mappingGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.mappingCard{position:relative;overflow:hidden;min-height:165px}
+.mappingCard:after{content:attr(data-team);position:absolute;right:8px;bottom:-26px;font-family:Impact,Arial,sans-serif;
+  font-size:100px;font-weight:900;color:var(--rule);opacity:.45;pointer-events:none}
+.mappingCard>*{position:relative;z-index:1}
+@media(max-width:980px){header.top .controls{width:100%}.arenaNav{order:2;width:100%}}
+@media(max-width:700px){.boardGrid{grid-template-columns:1fr}.boardTeam{border-right:0;border-bottom:1px solid var(--ink-2)}
+  .boardHead,.boardFoot{display:block}.mappingGrid{grid-template-columns:1fr}.stadiumHero{min-height:420px;height:65vh}}
+
 /* --- controls ---------------------------------------------------------- */
 button,select,input{font-family:var(--font);font-size:12px;color:var(--ink)}
 .btn{
@@ -252,13 +299,14 @@ pre.out{
 <body>
 <div class="wrap">
 
-<header class="top">
+<header class="top" id="top">
   <div>
     <div class="eyebrow">COLLEGE FOOTBALL DATA / EXHIBITION</div>
     <h1>Game Day Climate</h1>
     <div class="sub">Scores become heat. Margins become movement. Games reshape the room.</div>
   </div>
-  <div class="row">
+  <nav class="arenaNav" aria-label="Sections"><a href="#scoreboard">SCOREBOARD</a><a href="#field">FIELD</a><a href="#systems">SYSTEMS</a><a href="#data">DATA</a><a href="#statement">THESIS</a></nav>
+  <div class="row controls">
     <div>
       <label>Mode</label>
       <div class="seg" id="modeSeg">
@@ -282,17 +330,35 @@ pre.out{
 </header>
 
 <section class="intro">
-  <div class="eyebrow">THE DATA-TO-ROOM PLAYBOOK</div>
+  <div class="sectionKicker">THE DATA-TO-ROOM PLAYBOOK</div>
   <h2>What drives the room</h2>
-  <p>Each team contributes its most recent completed regular-season game. Points scored and scoring margin
+  <p>Three bays contain a heat pump, humidifier, and fan for each team, alongside two fixed lights per team. Each uses the most recent completed regular-season game. Points scored and scoring margin
   (team points minus opponent points) become environmental setpoints. These are design translations,
   not measurements of actual weather or instructions for physical equipment.</p>
   <div class="mappingGrid" id="mappingGrid"></div>
   <div class="note">Data source: College Football Data API. Updated about every 15 minutes while the server runs; scores do not update during a game.</div>
 </section>
 
+<section class="stadiumHero" aria-label="Night stadium introduction">
+  <div class="heroShade"></div>
+  <div class="heroContent">
+    <div class="eyebrow">IARC 425 / READING BIG DATA AT THE HUMAN SCALE</div>
+    <div class="heroDisplay"><span>GAME DAY</span><strong>CLIMATE</strong></div>
+    <p>Three teams. Fifteen systems. One room shaped by the scoreboard.</p>
+    <a class="enterBtn" href="#field">ENTER THE STADIUM <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="heroSideline">LIVE DATA / SPATIAL ATMOSPHERE / COLLEGE FOOTBALL</div>
+</section>
+
+<section class="scoreboard" id="scoreboard">
+  <div class="boardHead"><span>THE THREE-TEAM BOARD</span><span>LAST COMPLETED REGULAR-SEASON GAME</span></div>
+  <div class="boardGrid" id="teamBoard"></div>
+  <div class="boardFoot">POINTS → TEMPERATURE + FRONT LIGHTS &nbsp; / &nbsp; MARGIN → AIRFLOW + HUMIDITY + BACK LIGHTS</div>
+</section>
+
 <!-- ======================= GALLERY / AXON ============================== -->
-<section>
+<section id="field" class="fieldSection">
+  <div class="sectionKicker">01 / THE FIELD</div>
   <h2>Gallery space</h2>
   <div class="row" style="margin-bottom:12px">
     <div>
@@ -343,7 +409,8 @@ pre.out{
 </section>
 
 <!-- ======================= SYSTEMS + GRAPHS ============================ -->
-<section>
+<section id="systems">
+  <div class="sectionKicker">02 / EQUIPMENT DECK</div>
   <h2>Systems</h2>
   <div class="systems" id="systemsRow"></div>
   <div class="note">
@@ -354,7 +421,8 @@ pre.out{
 </section>
 
 <!-- ======================= LINKING ===================================== -->
-<section>
+<section id="data">
+  <div class="sectionKicker">03 / DATA CONCOURSE</div>
   <h2>Inputs &rarr; if-then &rarr; systems</h2>
   <div class="linkGrid" id="linkGrid">
     <div>
@@ -410,7 +478,7 @@ pre.out{
 
 <!-- ======================= STATEMENT =================================== -->
 <!-- >>> AI-AGENT EDIT ZONE: STATEMENT >>> -->
-<section class="statement">
+<section class="statement" id="statement">
   <h2>Artist Statement</h2>
   <p>My thesis work is concerned with stadiums and college sports. I chose to work with college
   football statistics because they offered a way to study the events that give these spaces
@@ -418,8 +486,9 @@ pre.out{
   treating a game as a final score alone, I wanted to ask how its changing numbers might be
   experienced spatially.</p>
   <p>In this exhibition, data from three college football teams informs the room's temperature,
-  airflow, humidity, and light. Points scored can raise a heat-pump target or brighten a zone;
-  scoring margins can shift the fan, humidity, or another light. These connections are deliberate
+  airflow, humidity, and light. Each team has its own heat pump, humidifier, and fan, plus two
+  lights. Points scored can raise that team's heat-pump target or brighten its front light;
+  scoring margins can shift its fan, humidifier, and back light. These connections are deliberate
   translations, not claims that a score has a natural temperature or that a win is inherently bright.
   They let me test how an abstract statistic becomes an atmosphere that a visitor can perceive.</p>
   <p>This is an exploratory study for my thesis. By comparing what a sports statistic communicates
@@ -1462,34 +1531,50 @@ async function pushSystems(){
 /* The explanatory cards read the same source labels and rules as the live table. */
 function buildMappings(){
   const labels = Object.fromEntries(S.cfg.apis.map(a => [a.id, a.label]));
-  const descriptions = {
-    heatpump_1:"Team 1 scoring sets the heat-pump temperature.",
-    fan_1:"Team 1 scoring margin controls airflow.",
-    humidifier_1:"A close Team 2 game sets a higher humidity target."
+  const rows = [];
+  for(let i=1;i<=3;i++){
+    for(const type of ["heatpump","humidifier","fan"])
+      rows.push({id:`${type}_${i}`, i, type});
+    rows.push({id:`light_${i}`,i,type:"front light"});
+    rows.push({id:`light_${i+3}`,i,type:"back light"});
+  }
+  const names = {heatpump:"HEAT PUMP",humidifier:"HUMIDIFIER",fan:"FAN",
+                 "front light":"FRONT LIGHT","back light":"BACK LIGHT"};
+  const units = {heatpump:"°C",humidifier:"% RH",fan:"m/s",
+                 "front light":" intensity","back light":" intensity"};
+  const meaning = {
+    heatpump:"Points scored set this team's temperature target.",
+    humidifier:"A close result makes this team's bay more humid.",
+    fan:"A margin of 14 or more produces stronger airflow.",
+    "front light":"Scoring 30 or more points brightens this zone.",
+    "back light":"A win brightens this team's back zone."
   };
-  const systems = ["heatpump_1","fan_1","humidifier_1",
-                   "light_1","light_2","light_3","light_4","light_5","light_6"];
-  const names = {heatpump_1:"Heat pump",fan_1:"Fan",humidifier_1:"Humidifier"};
-  const unit = {heatpump_1:"°C",fan_1:"m/s",humidifier_1:"% RH"};
-  $("#mappingGrid").innerHTML = systems.map((id,index) => {
+  $("#mappingGrid").innerHTML = rows.map(({id,i,type}) => {
     const r = S.cfg.rules.find(x => x.system === id);
     if(!r) return "";
-    const label = labels[r.api] || r.api;
-    const team = label.split(" latest game:")[0];
+    const team = (labels[`team_${i}_points`] || `Team ${i}`).split(" latest game:")[0];
     const metric = r.api.endsWith("margin") ? "scoring margin" : "points scored";
-    const title = names[id] || `Zone ${id.split("_")[1]} light`;
-    const explanation = descriptions[id] ||
-      (index < 6 ? `${team}'s points set this front-row light.` :
-                   `${team}'s winning margin sets this back-row light.`);
     const test = r.op === "between" ? `between ${r.value} and ${r.value2}` : `${r.op} ${r.value}`;
-    const suffix = unit[id] || " intensity";
-    return `<article class="mappingCard"><div class="eyebrow">${team.toUpperCase()} / ${metric.toUpperCase()}</div>
-      <h3>${title}</h3><p>${explanation} If ${metric} is ${test}, the target is
+    const suffix = units[type];
+    return `<article class="mappingCard" data-team="${i}"><div class="eyebrow">${team.toUpperCase()} / ${metric.toUpperCase()}</div>
+      <h3>${names[type]}</h3><p>${meaning[type]} If ${metric} is ${test}, the target is
       <b>${r.then}${suffix}</b>; otherwise <b>${r.otherwise}${suffix}</b>.</p>
       <div class="live" data-feed="${r.api}">Latest reading: waiting</div></article>`;
   }).join("");
+  $("#teamBoard").innerHTML = [1,2,3].map(i => {
+    const team = (labels[`team_${i}_points`] || `Team ${i}`).split(" latest game:")[0];
+    return `<div class="boardTeam"><div class="boardTeamName">0${i} / ${team.toUpperCase()}</div>
+      <div class="boardNumbers"><span data-board="team_${i}_points">--</span><small>PTS</small>
+      <span data-board="team_${i}_margin">--</span><small>MARGIN</small></div></div>`;
+  }).join("");
 }
 function renderMappings(){
+  $$('[data-board]').forEach(el => {
+    const feed = S.frame.apis[el.dataset.board];
+    el.textContent = feed && feed.value !== null && feed.value !== undefined
+      ? (feed.value > 0 && el.dataset.board.endsWith("margin") ? "+" : "") + fmt(feed.value,0)
+      : "--";
+  });
   $$(".mappingCard .live").forEach(el => {
     const feed = S.frame.apis[el.dataset.feed];
     el.textContent = feed && feed.value !== null && feed.value !== undefined
